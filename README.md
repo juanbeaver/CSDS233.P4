@@ -75,3 +75,22 @@ Time Spent: \~ 2 hr (50% done)
     * I'm unsure on how to correctly implement this.&#x20;
 
 Time Spent: \~2 hr (90% done)
+
+## Apr. 6, 2022, 12:00 AM
+
+* Continuing to work on the mostCommonCollocs() method.
+  * Going to try to implement this with 2 more HashTables, one for the collocations -1 and one for collocations +1.
+  * But going to hash each table with the base word, then have the key set to the respective collocation. Leaving me with indexes to base words and then a linked list with all the collocations with the base word at that index.&#x20;
+    * Then using the same method as before to rank them.&#x20;
+    * My first implementation of this was not resulting in the correct ranks.&#x20;
+    * The issue has been that when my table needs to resize, it rehashes using the key-value pair, and when I add with the hashCode of the basePair, it has no way of knowing what the original hash was.&#x20;
+      * might need to restart.
+      * I was able to tweak my resize method and HashEntry class to allow an accurate resize operation, by storing the hashcode of an entry created with given hashcode.&#x20;
+  * FInished writing all methods for WordStats.
+
+Time Spent: \~ 2hr&#x20;
+
+## Apr. 6, 2022, 2:00 AM
+
+* Started working on the WordStat testing class.
+
