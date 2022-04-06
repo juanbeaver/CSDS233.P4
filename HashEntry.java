@@ -1,4 +1,4 @@
-public class HashEntry{
+public class HashEntry implements Comparable<HashEntry> {
 
     String key;
     int value;
@@ -39,5 +39,9 @@ public class HashEntry{
             pointer = pointer.getNext();
         }
         return count;
+    }
+
+    public int compareTo(HashEntry o){
+        return Integer.compare(this.getValue(), o.getValue());
     }
 }

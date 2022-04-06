@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class HashTable {
@@ -7,28 +6,6 @@ public class HashTable {
     int entries = 0;
     double load;
     final double loadFactor = .75;
-
-
-    public static void main(String[] args) {
-        HashTable test = new HashTable();
-        test.put("test1", 1);
-        test.put("test2", 1);
-        test.put("test3", 1);
-        test.put("test4", 1);
-        test.put("test5", 1);
-        test.put("test6", 1);
-        test.put("test7", 1);
-        test.put("test8", 1);
-        test.put("test9", 1);
-        test.put("test10", 1);
-        test.put("test11", 2, Objects.hashCode("test10"));
-        test.update("test8", 12);
-        test.put("test5", 1);
-
-        System.out.println("Table size is : " + test.table.length);
-        System.out.println("Total table entries are: " + test.entries);
-
-    }
 
     /**
      *  A constructor for the HashTable class, starts a table with default size of 10.
@@ -75,7 +52,6 @@ public class HashTable {
         if(load < loadFactor){
             if(table[indexOfEntry] == null){ // If index is empty, add the entry
                 table[indexOfEntry] = entry;
-                existsInTable = true;
                 entries++;
             }
             else{
@@ -126,7 +102,6 @@ public class HashTable {
         if(load < loadFactor){
             if(table[indexOfEntry] == null){ // If index is empty, add the entry
                 table[indexOfEntry] = entry;
-                existsInTable = true;
                 entries++;
             }
             else{
@@ -174,18 +149,21 @@ public class HashTable {
 
         if(bucket != null) {
             if (bucket.getLength() > 1) {
-                while (bucket.getNext() != null && !foundOrAdded) {
+                while (bucket.getNext() != null) {
                     if (bucket.getKey().equals(key)) {
-                        bucket.setValue(value);
                         foundOrAdded = true;
+                        break;
                     }
                     bucket = bucket.getNext();
                 }
-                if (!foundOrAdded) {
+                if (foundOrAdded) {
+                    bucket.setValue(value);
+                }
+                else{
                     put(key, value);
                 }
             }
-            if(bucket.getKey().equals(key)){
+            else if(bucket.getKey().equals(key)){
                 bucket.setValue(value);
                 foundOrAdded = true;
             }
@@ -193,7 +171,7 @@ public class HashTable {
                 put(key, value);
             }
         }
-        if(!foundOrAdded){
+        if(!foundOrAdded) {
             put(key, value);
         }
     }
