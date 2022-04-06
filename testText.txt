@@ -1,0 +1,6 @@
+This is a test text file, this file has 32 words.
+
+This is a second line that had an empty line before it, ends in whitespace
+
+This line ends with a letter
+

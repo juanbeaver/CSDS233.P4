@@ -11,7 +11,6 @@ import java.util.ArrayList;
  */
 public class Tokenizer {
 
-    private BufferedReader reader;
     private ArrayList<String> wordList = new ArrayList<>();
 
     public static void main(String[] args){
@@ -61,7 +60,7 @@ public class Tokenizer {
      */
     Tokenizer(String file){
         try {
-            reader = new BufferedReader(new FileReader(file));
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = "";
             while((line = reader.readLine()) != null){
                 normalizeAndAdd(line);
