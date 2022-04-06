@@ -4,6 +4,7 @@ public class HashEntry implements Comparable<HashEntry> {
     int value;
     HashEntry next;
     int length = 1;
+    int hashCode = 0;
 
     HashEntry(String key, int value){
         this.key = key;

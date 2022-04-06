@@ -29,10 +29,15 @@ public class HashTable {
         HashTable newTable = new HashTable(table.length * 2);
         for (HashEntry x : table) {
             if (x != null) {
+                if(x.hashCode == 0){
                 newTable.put(x.getKey(), x.getValue());
+                }
+                else{
+                    newTable.put(x.getKey(), x.getValue(), x.hashCode);
+                }
             }
         }
-        table = newTable.table;
+        this.table = newTable.table;
     }
 
     /**
@@ -68,6 +73,7 @@ public class HashTable {
                 }
                 if(pointer.getKey().equals(key) && !existsInTable){
                     pointer.setValue(pointer.getValue()+1);
+                    existsInTable = true;
                 }
                 else if(!existsInTable){
                     pointer = table[indexOfEntry];
@@ -98,6 +104,7 @@ public class HashTable {
         load = (double) entries / (double) table.length;
 
         HashEntry entry = new HashEntry(key, value);
+        entry.hashCode = hashCode;
         //If load is below loadFactor, continue
         if(load < loadFactor){
             if(table[indexOfEntry] == null){ // If index is empty, add the entry
@@ -118,6 +125,7 @@ public class HashTable {
                 }
                 if(pointer.getKey().equals(key) && !existsInTable){
                     pointer.setValue(pointer.getValue()+1);
+                    existsInTable = true;
                 }
                 else if(!existsInTable){
                     pointer = table[indexOfEntry];
@@ -131,7 +139,7 @@ public class HashTable {
         }
         else{ //Increase the size of the table and add the key-value pair.
             resize();
-            put(key, value);
+            put(key, value, hashCode);
         }
     }
 

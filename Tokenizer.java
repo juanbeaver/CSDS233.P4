@@ -34,11 +34,11 @@ public class Tokenizer {
 
         for(int i = 0; i < sentence.length(); i++){
             //if letter or digit append to temp String
-            if(Character.isLetterOrDigit(sentence.charAt(i))){
+            if(Character.isLetter(sentence.charAt(i))){
                 word.append(sentence.charAt(i));
             }
             //If character is hyphen or apostrophe do nothing
-            else if(sentence.charAt(i) == 39 || sentence.charAt(i) == 45) {
+            else if(sentence.charAt(i) == 39 || sentence.charAt(i) == 45 || Character.isDigit(sentence.charAt(i))){
                 ;
             }
             else{

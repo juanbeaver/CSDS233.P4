@@ -8,11 +8,13 @@ public class WordStat {
     ArrayList<String> words;
     ArrayList<HashEntry> wordsRanked;
     ArrayList<HashEntry> wordPairsRanked;
-    ArrayList<HashEntry> collocsRanked;
+    ArrayList<HashEntry> precedingCollocsRanked;
+    ArrayList<HashEntry> followingCollocsRanked;
 
     HashTable wordTable;
     HashTable wordPairTable;
-    HashTable collocTable;
+    HashTable precedingCollocTable;
+    HashTable followingCollocTable;
 
     public static void main(String[] args) {
 
@@ -35,14 +37,112 @@ public class WordStat {
         for(String x: mostCommonWordPairs){
             System.out.println(x);
         }
+
+        System.out.println("Most common collocs for 'on +1:' ");
+        String[] mostCommonCollocsFollPairs = words.mostCommonCollocs(10,"on", 1);
+        for(String x: mostCommonCollocsFollPairs){
+            System.out.println(x);
+        }
+
+        System.out.println("Most common collocs for 'on -1:' ");
+        String[] mostCommonCollocsPrecPairs = words.mostCommonCollocs(10,"on", -1);
+        for(String x: mostCommonCollocsPrecPairs){
+            System.out.println(x);
+        }
     }
 
     public WordStat(String fileName) {
         wordsList = new Tokenizer(fileName);
         words = wordsList.wordList();
+
         wordsRanked = new ArrayList<>();
         wordPairsRanked = new ArrayList<>();
-        collocsRanked = new ArrayList<>();
+        precedingCollocsRanked = new ArrayList<>();
+        followingCollocsRanked = new ArrayList<>();
+
+        wordTable = new HashTable();
+
+        for (String x : words) {
+            wordTable.put(x, 1);
+        }
+
+        for (int i = 0; i < wordTable.entries - 1; i++) {
+            if(wordTable.table[i] != null){
+                HashEntry pointer = wordTable.table[i];
+                while(pointer != null){
+                    wordsRanked.add(pointer);
+                    pointer = pointer.getNext();
+                }
+            }
+        }
+
+        wordsRanked.sort(Collections.reverseOrder());
+
+        wordPairTable = new HashTable();
+
+        for(int i = 0; i < words.size() - 1; i++){
+            String currPair = words.get(i) + " " + words.get(i + 1);
+            wordPairTable.put(currPair, 1);
+        }
+
+        for (int i = 0; i < wordPairTable.table.length - 1; i++) {
+            if(wordPairTable.table[i] != null){
+                HashEntry pointer = wordPairTable.table[i];
+                while(pointer != null){
+                    wordPairsRanked.add(pointer);
+                    pointer = pointer.getNext();
+                }
+            }
+        }
+
+        wordPairsRanked.sort(Collections.reverseOrder());
+
+        precedingCollocTable = new HashTable();
+
+        for(int i = 1; i < words.size() - 1; i++){
+            String currColloc = words.get(i - 1) + " " + words.get(i);
+            precedingCollocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
+        }
+
+        for (int i = 0; i < precedingCollocTable.table.length - 1; i++) {
+            if(precedingCollocTable.table[i] != null){
+                HashEntry pointer = precedingCollocTable.table[i];
+                while(pointer != null){
+                    precedingCollocsRanked.add(pointer);
+                    pointer = pointer.getNext();
+                }
+            }
+        }
+
+        precedingCollocsRanked.sort(Collections.reverseOrder());
+
+        followingCollocTable = new HashTable();
+
+        for(int i = 0; i < words.size() - 1; i++){
+            String currColloc = words.get(i) + " " + words.get(i + 1);
+            followingCollocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
+        }
+
+        for (int i = 0; i < followingCollocTable.table.length - 1; i++) {
+            if(followingCollocTable.table[i] != null){
+                HashEntry pointer = followingCollocTable.table[i];
+                while(pointer != null){
+                    followingCollocsRanked.add(pointer);
+                    pointer = pointer.getNext();
+                }
+            }
+        }
+
+        followingCollocsRanked.sort(Collections.reverseOrder());
+    }
+
+    public WordStat(String[] wordArray){
+        wordsList = new Tokenizer(wordArray);
+        words = wordsList.wordList();
+        wordsRanked = new ArrayList<>();
+        wordPairsRanked = new ArrayList<>();
+        precedingCollocsRanked = new ArrayList<>();
+        followingCollocsRanked = new ArrayList<>();
 
         wordTable = new HashTable();
 
@@ -81,89 +181,43 @@ public class WordStat {
 
         wordPairsRanked.sort(Collections.reverseOrder());
 
-        collocTable = new HashTable();
+        precedingCollocTable = new HashTable();
+
+        for(int i = 1; i < words.size() - 1; i++){
+            String currColloc = words.get(i - 1) + " " + words.get(i);
+            precedingCollocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
+        }
+
+        for (int i = 0; i < precedingCollocTable.table.length - 1; i++) {
+            if(precedingCollocTable.table[i] != null){
+                HashEntry pointer = precedingCollocTable.table[i];
+                while(pointer != null){
+                    precedingCollocsRanked.add(pointer);
+                    pointer = pointer.getNext();
+                }
+            }
+        }
+
+        precedingCollocsRanked.sort(Collections.reverseOrder());
+
+        followingCollocTable = new HashTable();
 
         for(int i = 0; i < words.size() - 1; i++){
             String currColloc = words.get(i) + " " + words.get(i + 1);
-            collocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
+            followingCollocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
         }
 
-        for (int i = 0; i < collocTable.table.length - 1; i++) {
-            if(collocTable.table[i] != null){
-                HashEntry pointer = collocTable.table[i];
+        for (int i = 0; i < followingCollocTable.table.length - 1; i++) {
+            if(followingCollocTable.table[i] != null){
+                HashEntry pointer = followingCollocTable.table[i];
                 while(pointer != null){
-                    collocsRanked.add(pointer);
+                    followingCollocsRanked.add(pointer);
                     pointer = pointer.getNext();
                 }
             }
         }
 
-        collocsRanked.sort(Collections.reverseOrder());
-
-    }
-
-    public WordStat(String[] wordArray){
-        wordsList = new Tokenizer(wordArray);
-        words = wordsList.wordList();
-        wordsRanked = new ArrayList<>();
-        wordPairsRanked = new ArrayList<>();
-        collocsRanked = new ArrayList<>();
-
-        HashTable wordTable = new HashTable();
-
-        for (String x : words) {
-            wordTable.put(x, 1);
-        }
-
-        for (int i = 0; i < wordTable.table.length - 1; i++) {
-            if(wordTable.table[i] != null){
-                HashEntry pointer = wordTable.table[i];
-                while(pointer != null){
-                    wordsRanked.add(pointer);
-                    pointer = pointer.getNext();
-                }
-            }
-        }
-
-        wordsRanked.sort(Collections.reverseOrder());
-
-        HashTable wordPairTable = new HashTable();
-
-        for(int i = 0; i < words.size() - 1; i++){
-            String currPair = words.get(i) + " " + words.get(i + 1);
-            wordPairTable.put(currPair, 1);
-        }
-
-        for (int i = 0; i < wordPairTable.table.length - 1; i++) {
-            if(wordPairTable.table[i] != null){
-                HashEntry pointer = wordPairTable.table[i];
-                while(pointer != null){
-                    wordPairsRanked.add(pointer);
-                    pointer = pointer.getNext();
-                }
-            }
-        }
-
-        wordPairsRanked.sort(Collections.reverseOrder());
-
-        collocTable = new HashTable();
-
-        for(int i = 0; i < words.size() - 1; i++){
-            String currColloc = words.get(i) + " " + words.get(i + 1);
-            collocTable.put(currColloc, 1, Math.abs(Objects.hashCode(words.get(i))));
-        }
-
-        for (int i = 0; i < collocTable.table.length - 1; i++) {
-            if(collocTable.table[i] != null){
-                HashEntry pointer = collocTable.table[i];
-                while(pointer != null){
-                    collocsRanked.add(pointer);
-                    pointer = pointer.getNext();
-                }
-            }
-        }
-
-        collocsRanked.sort(Collections.reverseOrder());
+        followingCollocsRanked.sort(Collections.reverseOrder());
     }
 
     public int wordCount(String word){
@@ -245,6 +299,28 @@ public class WordStat {
     }
 
     public String[] mostCommonCollocs(int k, String baseWord, int i){
-        return null;
+        String[] collocsToReturn = new String[k];
+
+        if( i == 1){
+            int indexBase = Math.abs(Objects.hashCode(baseWord)) % followingCollocTable.table.length;
+            HashEntry baseWordBucket = followingCollocTable.table[indexBase];
+            for(int j = 0; j < k; j++){
+                collocsToReturn[j] = baseWordBucket.getKey();
+                baseWordBucket = baseWordBucket.getNext();
+            }
+            return collocsToReturn;
+        }
+        else if(i == -1){
+            int indexBase = Math.abs(Objects.hashCode(baseWord)) % precedingCollocTable.table.length;
+            HashEntry baseWordBucket = precedingCollocTable.table[indexBase];
+            for(int j = 0; j < k; j++){
+                collocsToReturn[j] = baseWordBucket.getKey();
+                baseWordBucket = baseWordBucket.getNext();
+            }
+            return collocsToReturn;
+        }
+        else{
+            return null;
+        }
     }
 }
