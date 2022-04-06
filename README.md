@@ -33,7 +33,7 @@ Time Spent: \~ 1 hr 30 min (10% complete)
 
 
 
-## Apr. 5, 2022, 8:00 PM
+## Apr. 5, 2022, 5:00 PM
 
 * Wrote the update() method
   * Figured out that I was resizing my hash table incorrectly. I was originally just increasing the size of the array and copying over the items. I fixed it to rehash after each resize.&#x20;
@@ -44,3 +44,5 @@ Time Spent: \~ 1 hr 30 min (10% complete)
     * Changed it to increment the value by one if the item is already in the table.&#x20;
 
 Time Spent: \~ 2 hr (50% done)
+
+## Apr. 5, 2022, 7:00 PM&#x20;
