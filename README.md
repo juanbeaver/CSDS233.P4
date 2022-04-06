@@ -17,3 +17,30 @@
 * Wrote the constructor that handles opening and reading a file and normalizing the text.
 
 Time Spent: \~ 1 hr 30 min (10% complete)
+
+## Apr. 5, 2022, 1:00 PM
+
+* Wrote the methods for the testing class TokenizerTester.
+  * Made sure to test sentences ending in whitespace, punctuation marks, or letters and numbers.&#x20;
+* Wrote the HashEntry class.
+* Started writing the HashTable class.&#x20;
+  * wrote the two constructors using an ArrayList.
+  * Decided to use an array of HashEntry for my HashTable.&#x20;
+* Wrote the put() method, and a helper method to increase the size of the HashTable.&#x20;
+* I'm a little confused about what the values in the pairs will be for the WordStat class, is it going to be the calculated index?&#x20;
+  * ignoring this for now
+* Wrote the put() method that is given hashCode
+
+
+
+## Apr. 5, 2022, 8:00 PM
+
+* Wrote the update() method
+  * Figured out that I was resizing my hash table incorrectly. I was originally just increasing the size of the array and copying over the items. I fixed it to rehash after each resize.&#x20;
+* Started writing the get() method.&#x20;
+  * &#x20;These methods were pretty straight forward, just hashed the key and iterated through the bucket until the key matched with an entry, then returned the value.
+* Changed my put method to ignore duplicates
+  * Not sure if this is the correct way but it seems like the correct way to handle this.&#x20;
+    * Changed it to increment the value by one if the item is already in the table.&#x20;
+
+Time Spent: \~ 2 hr (50% done)
