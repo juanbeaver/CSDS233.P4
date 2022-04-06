@@ -46,3 +46,32 @@ Time Spent: \~ 1 hr 30 min (10% complete)
 Time Spent: \~ 2 hr (50% done)
 
 ## Apr. 5, 2022, 7:00 PM&#x20;
+
+*   Started writing the HashTable testing class.
+
+    * Wrote test for put method with tests for: adding an entry that already exists, adding when collision occurs, and checking for correct amount of entries.&#x20;
+    * Wrote tests for update() method. Made sure to test for updating an entry that exists, and one that doesn't exist.&#x20;
+    * I couldn't figure out how to test that a chained entry can be tested besides by finding a string that hashed to the same index. So I skipped over testing this.
+      * Since my update method calculates where the given string would be indexed, the only way for it to find it is to iterate through the entire table. With a natural collision, it would go to the index of the collision and iterate through the linked list to find the correct key and return its value.
+    * Wrote the test method for get().&#x20;
+
+    Time Spent: \~1 hr
+
+## Apr. 5, 2022, 10:00 PM
+
+* Started the WordStat class.
+  * Wrote the constructors for using files and arrays.
+    * Decided to have 3 seperate HashTables for word, word pairs, and collocs.
+  * Wrote the wordCount() method
+    * Found the location of the given word and returned it's value.&#x20;
+    * Same thing for the wordPairCount()
+  * Started writing the wordRank method.
+    * decided to make my HashEntry class implement comparable to add the HashEntry objects to an ArrayList and then sort in reverse order. Then finally finds and returns the rank (index) of the given word.
+    * Same method for the wordPairRank method
+  * Started writing the mostCommonWords method.
+    * For this all i had to do was return k places in the wordsRanked sorted ArrayList.&#x20;
+    * Same methods were used for: leastCommonWords, mostCommonWordPairs.
+  * Started writing the mostCommonCollocs() method.
+    * I'm unsure on how to correctly implement this.&#x20;
+
+Time Spent: \~2 hr (90% done)
